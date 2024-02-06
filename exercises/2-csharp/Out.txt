@@ -1,0 +1,25 @@
+sqrt2^2 = 2 (should equal 2)
+pow1 to the power of 5 = 2 (should equal 2)
+ln(pow2) = 3.14159265358979 (should equal pi)
+the eth root of pow3 = 3.14159265358979 (should equal pi)
+lnfgamma0 is equal to 0.999999989064903
+and fgamma0 minus 1 is -1.09350973831468E-08
+lnfgamma1 is equal to 0.999999989064903
+and fgamma1 minus 1 is -1.09350973831468E-08
+lnfgamma2 is equal to 1.99999997812981
+and fgamma2 minus 2 is -2.18701947662936E-08
+lnfgamma3 is equal to 5.99999993438942
+and fgamma3 minus 6 is -6.56105845209254E-08
+lnfgamma4 is equal to 23.9999997375577
+and fgamma4 minus 24 is -2.62442338083702E-07
+lnfgamma5 is equal to 119.999998687788
+and fgamma5 minus 120 is -1.31221169397122E-06
+lnfgamma6 is equal to 719.99999212673
+and fgamma6 minus 720 is -7.87327019224904E-06
+lnfgamma7 is equal to 5039.99994488711
+and fgamma7 minus 5040 is -5.51128914594301E-05
+lnfgamma8 is equal to 40319.9995590969
+and fgamma8 minus 40320 is -0.000440903131675441
+lnfgamma9 is equal to 362879.997652016
+and fgamma9 minus 362880 is -0.00234798446763307
+lnfgamma10 is equal to 3628799.98539848
