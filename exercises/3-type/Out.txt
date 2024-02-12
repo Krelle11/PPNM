@@ -1,0 +1,73 @@
+2 is bigger than 1
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+1
+2
+3
+4
+5
+A.s=hello
+a.s=hello
+B.s=hello
+b.s=hello
+A.s=new hello
+a.s=hello
+vector[0] is equal to 0
+
+vector[1] is equal to 0
+
+vector[2] is equal to 0
+
+vector[3] is equal to 0
+
+vector[4] is equal to 0
+
+Time to play with euclidean vectors
+The first entrance of our zero vector is in fact 0
+The second entrance of our zero vector is in fact 0
+The third entrance of our zero vector is in fact 0
+The first entrance of our first non-zero vector is in fact 2
+The second entrance of our first non-zero vector is in fact 2
+The third entrance of our first non-zero vector is in fact 3
+The first entrance of our second non-zero vector is in fact 3
+The second entrance of our second non-zero vector is in fact 6
+The third entrance of our second non-zero vector is in fact 5
+Our constant 'c' will be 2
+Vector1 has the entrances: 2 2 3
+2 times Vector1 has the entrances: 4 4 6
+Vector1 times 2 has the entrances: 4 4 6
+2 times Vector1 plus Vector1 times 2 has the entrances: 8 8 12
+2 times Vector1 minus Vector1 times 2 has the entrances: 0 0 0
+Minus 2 times Vector1 has the entrances: -4 -4 -6
+Vector1 has the entrances: 2 2 3
+2 times Vector1 has the entrances: 4 4 6
+Vector1 dotted with 2 times Vector1 is: 34
+hello again
+my max int is 2147483647
+which is equal to int.MaxValue
+my min int is -2147483648
+which is equal to int.Min.Value
+The double precision (double) machine epsilon is 2.22044604925031E-16
+which is about 2^-52
+The single precision (float) machine epsilon is 1.192093E-07
+which is about 2^-32
+is 'a' equal to 'b'? Answer: False
+is 'a' bigger than 1? Answer: False
+is 'b' then bigger than 1? Answer: True
+Since epsilon is an upper bound on the approximation error due to rounding, then 1 + eps/2 = 1 because of rounding, such that 1 + tiny + tiny = 1 + tiny = 1, since arithmetics are done from left to right
+But epsilon isn't the supremum or least upper bound, and so tiny + tiny + 1 = epsilon + 1 != 1
+d1=0.8
+d2=0.8
+d1=8.0000e-001
+d2=8.0000e-001
+d1=7.999999999999999e-001
+d2=8.000000000000000e-001
+d1==d2 ? => False
+Is 'd1' equal to 'd2' using our approximation function? Answer: True
