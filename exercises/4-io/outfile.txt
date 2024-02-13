@@ -1,0 +1,2 @@
+testing to see whether the data (string) is written to the specified file
+50

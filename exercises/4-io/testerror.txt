@@ -1,0 +1,2 @@
+testing to see whether the standard error stream is connected to the console (terminal)
+because then what I write to the standard error stream will be sent to the console (as data i.e a string)

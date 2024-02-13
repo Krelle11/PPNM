@@ -1,0 +1,8 @@
+hello this is a test to see whether the standard output stream is connected to the console(terminal)
+because then what I write to the standard output stream (e.g. this text) is sent to the console
+another test
+
+Console.Out is a TextWriter (in the System namespace) which is an abstract class in C# that provides methods for writing to text data to a stream
+
+Every (console) C#-program has the standard input stream, 'System.Console.In', automatically opened and connected to the keyboard of the terminal (console) from which the program is run (but can be conveniently redirected)
+LHGOIAGHOGA
