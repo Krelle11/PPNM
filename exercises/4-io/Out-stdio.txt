@@ -1,0 +1,6 @@
+This goes to stdout: x=7
+This goes to stdout: x=1234
+
+
+This goes to stdout: x=7
+This goes to stdout: x=1234
