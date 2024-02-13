@@ -49,6 +49,10 @@ Minus 2 times Vector1 has the entrances: -4 -4 -6
 Vector1 has the entrances: 2 2 3
 2 times Vector1 has the entrances: 4 4 6
 Vector1 dotted with 2 times Vector1 is: 34
+Vector1 dotted with 2 times Vecotr1 is: 34
+False
+True
+2, 2, 3
 hello again
 my max int is 2147483647
 which is equal to int.MaxValue

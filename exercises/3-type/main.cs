@@ -86,6 +86,14 @@ static int Main() {
 
 	double dot1 = Vector1.dot(Vector3);
 	Console.WriteLine($"Vector1 dotted with 2 times Vector1 is: {dot1}");
+	
+	double dot2 = vec.dot(Vector1, Vector3);
+	Console.WriteLine($"Vector1 dotted with 2 times Vecotr1 is: {dot2}");
+
+	Console.WriteLine(vec.approx(Vector1, Vector2));
+	Console.WriteLine(vec.approx(Vector1, 1*Vector1));
+
+	Console.WriteLine(Vector1.ToString());
 
 	return 0;
 }//Main

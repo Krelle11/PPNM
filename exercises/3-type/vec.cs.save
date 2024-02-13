@@ -88,7 +88,7 @@ public static bool approx(vec u, vec v) {
 }
 
 public override string ToString() {
-	return this.x.ToString() + ", " + this.y.ToString() + ", " + this.z.ToString();
+	return this.x.ToString(), this.y, this.z;
 }
 
 
