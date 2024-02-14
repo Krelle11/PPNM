@@ -1,0 +1,27 @@
+Call of 'add' method for genlist object
+Right now nothing has been done, so the the 'size' of the array 'data' as given by size() is: 0 and more directly its length is: 0
+Now the temporary array 'newdata' has been created. The method call 'size()' still returns the size of the 'data' array which is 0
+But the length of the array 'newdata' should be 0 + 1, and it is in fact: 1
+We are now at the end of the for-loop. All data has been copied from 'data' to 'newdata', and the input parameter 'item' (of type T) from the method header has been placed at the end
+The size of 'newdata' thus is: 1
+Now we have set the array 'data' equal to 'newdata' and so the size of 'data' as given by the method call 'size()' is: 1 and more directly the length of the array 'data' is: 1
+Also the last object in 'data' is now 2 which is equal to the input parameter i.e to: 2
+Call of 'add' method for genlist object
+Right now nothing has been done, so the the 'size' of the array 'data' as given by size() is: 1 and more directly its length is: 1
+Now the temporary array 'newdata' has been created. The method call 'size()' still returns the size of the 'data' array which is 1
+But the length of the array 'newdata' should be 1 + 1, and it is in fact: 2
+We are now at the end of the for-loop. All data has been copied from 'data' to 'newdata', and the input parameter 'item' (of type T) from the method header has been placed at the end
+The size of 'newdata' thus is: 2
+Now we have set the array 'data' equal to 'newdata' and so the size of 'data' as given by the method call 'size()' is: 2 and more directly the length of the array 'data' is: 2
+Also the last object in 'data' is now 3 which is equal to the input parameter i.e to: 3
+Call of 'add' method for genlist object
+Right now nothing has been done, so the the 'size' of the array 'data' as given by size() is: 2 and more directly its length is: 2
+Now the temporary array 'newdata' has been created. The method call 'size()' still returns the size of the 'data' array which is 2
+But the length of the array 'newdata' should be 2 + 1, and it is in fact: 3
+We are now at the end of the for-loop. All data has been copied from 'data' to 'newdata', and the input parameter 'item' (of type T) from the method header has been placed at the end
+The size of 'newdata' thus is: 3
+Now we have set the array 'data' equal to 'newdata' and so the size of 'data' as given by the method call 'size()' is: 3 and more directly the length of the array 'data' is: 3
+Also the last object in 'data' is now 5 which is equal to the input parameter i.e to: 5
+2
+3
+5
