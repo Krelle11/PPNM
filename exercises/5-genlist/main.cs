@@ -1,57 +1,73 @@
-class main {
 
-
-/*
-
-public static System.Func<double, double> make_power(int i) {
-	double a = 4;
-	System.Func<double, double> f = delegate(double x){return System.Math.Pow(x*a, i);};
-	return f;
-}
-
-*/
-
+public class main {
 
 public static int Main() {
 
-genlist<double> newlist = new genlist<double>();
-
-//System.Console.Out.WriteLine($"size={newlist.size()} length={newlist.data.Length}");
-
-newlist.add(2);
-//System.Console.Out.WriteLine($"size={newlist.size()} length={newlist.data.Length}");
-
-newlist.add(3);
-//System.Console.Out.WriteLine($"size={newlist.size()} length={newlist.data.Length}");
-
-newlist.add(5);
-
-for (int i = 0; i < newlist.size(); i++) {
-	System.Console.Out.WriteLine(newlist[i]);
-}
+//System.Console.Out.WriteLine("hello");
+//System.Console.Error.WriteLine("hello");
 
 /*
+genlist<double> mylist = new genlist<double>();
 
-double x = 10;
-double a = 7;
-System.Func<double, double> f = delegate(double tmp) {return a;};
+System.Console.Out.WriteLine(mylist.size);
+mylist.add(6);
+System.Console.Out.WriteLine(mylist.size);
+mylist.add(11);
+System.Console.Out.WriteLine(mylist.size);
 
-System.Console.WriteLine($"f({x}) = {f(x)}");
+for (int i = 0; i < mylist.size; i++) {
+	System.Console.Out.WriteLine(mylist[i]);
+}
+*/
 
 
-var flist = new genlist<System.Func<double, double>>();
+var outputfile = new System.IO.StreamWriter("data.txt", append:true);
 
-flist.add(f);
+genlist<string> mylines = new genlist<string>();
+string line;
+int linenr = 1;
+//do {System.Console.Out.WriteLine(line);}
 
-flist.add(System.Math.Sin);
-
-System.Console.WriteLine(flist.size());
-
-for(int i = 0; i < flist.size(); i++) {
-	System.Console.Out.WriteLine($"f[{i}]({x}) = {flist[i](x)}");
+while( (line = System.Console.In.ReadLine()) != null) {
+	outputfile.WriteLine($"{linenr}. line read is: {line}");
+	mylines.add(line);
+	linenr += 1;
 }
 
-*/
+linenr = 1;
+for (int i = 0; i < mylines.size; i++) {
+	outputfile.WriteLine($"{linenr}. element in mylines is: {mylines[i]}");
+	linenr += 1;
+}
+
+
+genlist<double[]> listofnumbers = new genlist<double[]>();
+
+var splitoptions = System.StringSplitOptions.RemoveEmptyEntries;
+char[] splitdelimiters = {' ','\t'};
+
+for (int i = 0; i < mylines.size; i++) {
+        var words = mylines[i].Split(splitdelimiters, splitoptions);
+	var numbers = new double[words.Length];
+
+	for (int j = 0; j < words.Length; j++) {
+		outputfile.WriteLine($"{j+1}. element in {i+1}. element of mylines is: {words[j]}");
+		numbers[j] = double.Parse(words[j]);
+	}
+
+	listofnumbers.add(numbers);
+}
+
+
+for (int i = 0; i < listofnumbers.size; i++) {
+	var numbers = listofnumbers[i];
+	foreach(var number in numbers) {
+		System.Console.Out.WriteLine($"{number : 0.00e+00; -0.00e+00}");
+	}
+}
+
+
+outputfile.Close();
 
 return 0;
 

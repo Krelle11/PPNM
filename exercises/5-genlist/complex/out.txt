@@ -1,0 +1,7 @@
+sin of i times pi is approximately 0+11.5i
+square root of minus one is approximately 6.12e-17+1i
+square root of i is approximately 0.707+0.707i
+e to the power of i is approximately 0.54+0.841i
+e to the power of i times pi is approximately -1+1.22e-16i
+i to the power of i is approximately 0.208+0i
+log of i is approximately 0+1.57i

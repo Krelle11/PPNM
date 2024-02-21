@@ -1,0 +1,6 @@
+\
+	set terminal svg background "white"; \
+	set out "Lngamma.gnuplot.svg"; \
+	plot [0:5] \
+	"Out3.txt" with lines; \
+

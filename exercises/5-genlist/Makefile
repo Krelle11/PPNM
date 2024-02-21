@@ -1,11 +1,11 @@
-Out.txt: main.exe
-	mono $<  1> $@
+output.txt: main.exe
+	mono main.exe <input.txt 1> output.txt
 
 main.exe: main.cs genlist.dll
-	mcs -target:exe -reference:genlist.dll -out:main.exe main.cs
+	mcs -reference:genlist.dll -target:exe -out:main.exe main.cs
 
 genlist.dll: genlist.cs
 	mcs -target:library -out:genlist.dll genlist.cs
 
 clean:
-	$(RM) *.dll *.exe log* [Oo]ut*      # removes all that starts with 'O' and then 'ut' or 'o' and then 'ut'
+	rm -f main.exe genlist.dll main.exe output.txt data.txt

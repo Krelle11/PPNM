@@ -1,0 +1,20 @@
+1. line read is: 129.24 24.8             4.847
+2. line read is: 		88.6   33.745 7.78
+3. line read is: 30.39  99.811              6.723
+4. line read is:     -1.33   96.3   2.23
+1. element in mylines is: 129.24 24.8             4.847
+2. element in mylines is: 		88.6   33.745 7.78
+3. element in mylines is: 30.39  99.811              6.723
+4. element in mylines is:     -1.33   96.3   2.23
+1. element in 1. element of mylines is: 129.24
+2. element in 1. element of mylines is: 24.8
+3. element in 1. element of mylines is: 4.847
+1. element in 2. element of mylines is: 88.6
+2. element in 2. element of mylines is: 33.745
+3. element in 2. element of mylines is: 7.78
+1. element in 3. element of mylines is: 30.39
+2. element in 3. element of mylines is: 99.811
+3. element in 3. element of mylines is: 6.723
+1. element in 4. element of mylines is: -1.33
+2. element in 4. element of mylines is: 96.3
+3. element in 4. element of mylines is: 2.23
