@@ -1,0 +1,11 @@
+TIME = time --output=out.txt --append --portability --format="1 %e %U"
+MKEXE = mcs -target:exe -out:main.exe main.cs
+
+out.txt: main.exe
+	$(TIME) mono main.exe -threads:8 -terms:1e8 1> out.txt
+
+main.exe: main.cs
+	$(MKEXE)
+
+clean:
+	rm -f out.txt main.exe
