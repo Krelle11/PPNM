@@ -31,9 +31,10 @@ public class vector {
 	}
 	public static vector operator-(vector u, vector v) {
 		vector result = new vector(u.size);
+		for (int i = 0; i < result.size; i++) {
+			result[i] = u[i] - v[i];
+		}
 		return result;
-
-		//return new vec(u.x - v.x, u.y - v.y, u.z - v.z);
 	}
 
 }
@@ -67,11 +68,37 @@ public class matrix {
 		return Q;
 	}
 	public vector get_column(int j) {
-		vector columnj = new vector(size1);
+		vector column_j = new vector(size1);
 		for (int i = 0; i < size1; i++) {
-			columnj[i] = data[i + j*size1];
+			column_j[i] = data[i + j*size1];
 		}
-		return columnj;
+		return column_j;
+	}
+	public void set_column(int j, vector v) {
+		for (int i = 0; i < size1; i++) {
+			data[i + j*size1] = v[i];
+		}
+	}
+	public vector get_row(int i) {
+		vector row_i = new vector(size2);
+		for (int j = 0; j < size2; j++) {
+			row_i[j] = data[i + j*size1];
+		}
+		return row_i;
+	}
+	public void set_row(int i, vector v) {
+		for (int j = 0; j < size2; j++) {
+			data[i + j*size1] = v[j];
+		}
+	}
+	public matrix matrix_product(matrix B) {
+		matrix result = new matrix(size1, B.size2);
+		for (int i = 0; i < size1; i++) {
+			for (int j = 0; j < B.size2; j++) {
+				result[i, j] = get_row(i).dot(B.get_column(j));
+			}
+		}
+		return result;
 	}
 }
 
@@ -128,20 +155,41 @@ var rnd = new System.Random(1);    // for generating random numbers
 //System.Console.Out.WriteLine(rnd.NextDouble());
 
 
+System.Console.Out.WriteLine("lets look at vectors...");
 
-vector vec = new vector(2);
+vector vec1 = new vector(2);
+vector vec2 = new vector(2);
+
 
 //System.Console.Out.WriteLine($"size of vector is: {vec.size}");
 
-for (int i = 0; i < vec.size; i++) {
-	//System.Console.Out.WriteLine($"{i}'th entrance of vector is: {vec[i]}");
-	vec[i] = 1;
-	//System.Console.Out.WriteLine($"now {i}'th entrance of vector is: {vec[i]}");
-	//System.Console.Out.WriteLine($"this means the norm of the vector is: {vec.norm()}");
+for (int i = 0; i < vec1.size; i++) {
+	System.Console.Out.WriteLine($"{i}'th entrance of vec1 is: {vec1[i]}");
+	vec1[i] = rnd.NextDouble();
+	System.Console.Out.WriteLine($"now {i}'th entrance of vec1 is: {vec1[i]}");
+	//System.Console.Out.WriteLine($"this means the norm of the vector is: {vec1.norm()}");
+}
+
+for (int i = 0; i < vec2.size; i++) {
+        System.Console.Out.WriteLine($"{i}'th entrance of vec2 is: {vec2[i]}");
+        vec2[i] = rnd.NextDouble();
+        System.Console.Out.WriteLine($"now {i}'th entrance of vec2 is: {vec2[i]}");
+        //System.Console.Out.WriteLine($"this means the norm of the vector is: {vec2.norm()}");
 }
 
 
-System.Console.Out.WriteLine("time to look at matrices");
+vector vec3 = vec1 - vec2;
+
+System.Console.Out.WriteLine($"vec1 minus vec2 we call vec3");
+
+for (int i = 0; i < vec3.size; i++) {
+        System.Console.Out.WriteLine($"{i}'th entrance of vec3 is: {vec3[i]}");
+}
+
+
+System.Console.Out.WriteLine("");
+
+System.Console.Out.WriteLine("time to look at matrices...");
 
 matrix matrix1 = new matrix(2, 2);
 
@@ -161,22 +209,33 @@ matrix B = matrix1.Copy();
 for (int i = 0; i < B.size1; i++) {
         for (int j = 0; j < B.size2; j++) {
                 System.Console.Out.WriteLine($"({i},{j})'th entrance of B is: {B[i, j]}");
-                //matrix1[i, j] = 1;
+		//matrix1[i, j] = 1;
                 //System.Console.Out.WriteLine($"now ({i},{j})'th entrance of matrix is: {matrix1[i, j]}");
                 //System.Console.Out.WriteLine($"this means the norm of the {j}'th column of the matrix is: {matrix1.norm>
 	}
 }
 
+B.set_column(0, vec3);
+
+for (int i = 0; i < B.size1; i++) {
+        for (int j = 0; j < B.size2; j++) {
+                System.Console.Out.WriteLine($"after setting the 1'th column of B equal to vec3 the ({i},{j})'th entrance of B is: {B[i, j]}");
+	}
+}
+
+
+System.Console.Out.WriteLine("");
+System.Console.Out.WriteLine("lets look at columns of a matrix...");
+
 vector column1 = B.get_column(0);
 vector column2 = B.get_column(1);
 
-
 for (int i = 0; i < column1.size; i++) {
-	System.Console.Out.WriteLine($"{i}'th entrance of column 1 is: {column1[i]}");
+	System.Console.Out.WriteLine($"{i}'th entrance of column 1 of B is: {column1[i]}");
 }
 
 for (int i = 0; i < column2.size; i++) {
-        System.Console.Out.WriteLine($"{i}'th entrance of column 2 is: {column2[i]}");
+        System.Console.Out.WriteLine($"{i}'th entrance of column 2 of B is: {column2[i]}");
 }
 
 
@@ -186,12 +245,57 @@ System.Console.Out.WriteLine($"dot product between column 1 and column 2 is {col
 column1.scale(10);
 
 for (int i = 0; i < column1.size; i++) {
-        System.Console.Out.WriteLine($"after taking scalarproduct with 10 the {i}'th entrance of column 1 is: {column1[i]}");
+        System.Console.Out.WriteLine($"after scaling the 1'th column of B with 10 the {i}'th entrance of column 1 is: {column1[i]}");
 }
 
 
+System.Console.Out.WriteLine("");
+System.Console.Out.WriteLine("lets look at the rows of a matrix...");
+
+vector row1 = B.get_row(0);
+vector row2 = B.get_row(1);
+
+for (int i = 0; i < row1.size; i++) {
+        System.Console.Out.WriteLine($"{i}'th entrance of row 1 of B is: {row1[i]}");
+}
+
+for (int i = 0; i < row2.size; i++) {
+        System.Console.Out.WriteLine($"{i}'th entrance of row 2 of B is: {row2[i]}");
+}
+
+B.set_row(0, vec3);
+
+for (int i = 0; i < B.size1; i++) {
+        for (int j = 0; j < B.size2; j++) {
+                System.Console.Out.WriteLine($"after setting the 1'th row of B equal to vec3 the ({i},{j})'th entrance of B is: {B[i, j]}");
+	}
+}
+
+System.Console.Out.WriteLine("");
+
+System.Console.Out.WriteLine("lets look at matrix product");
+
+matrix C = new matrix(2, 2);
+
+for (int i = 0; i < C.size1; i++) {
+        for (int j = 0; j < C.size2; j++) {
+		C[i, j] = rnd.NextDouble();
+		System.Console.Out.WriteLine($"the ({i}, {j})'th entrance of C is: {C[i, j]}");
+	}
+}
+
+matrix G = C.matrix_product(B);
+
+System.Console.Out.WriteLine("we call the product of matrix C with matrix B 'G'");
+
+for (int i = 0; i < G.size1; i++) {
+        for (int j = 0; j < G.size2; j++) {
+                System.Console.Out.WriteLine($"the ({i}, {j})'th entrance of G is: {G[i, j]}");
+        }
+}
 
 
+System.Console.Out.WriteLine("");
 
 System.Console.Out.WriteLine("doing decomposition of matrix B...");
 
