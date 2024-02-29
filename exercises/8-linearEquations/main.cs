@@ -7,8 +7,15 @@ public class vector {
 		get => data[i];
 		set => data[i] = value;
 	}
-	public vector(int n) {
+	public vector(int n) {         // constructor
 		data = new double[n];
+	}
+	public vector(int n, int a) {     // constructor for vector with random entries between 0 and a
+		data = new double[n];
+		var rnd = new System.Random(a);
+		for (int i = 0; i < this.size; i++) {
+			data[i] = rnd.NextDouble();
+		}
 	}
 	public double norm() {
 		double len_squared = 0;
@@ -18,18 +25,26 @@ public class vector {
 		return Math.Sqrt(len_squared);
 	}
 	public double dot(vector v) {
+		if (this.size != v.size) {
+			throw new InvalidOperationException("vectors must be the same size!");
+		}
 		double dot = 0;
 		for (int i = 0; i < size; i++) {
 			dot += data[i]*v[i];
 		}
 		return dot;
 	}
-	public void scale(double c) {
+	public vector scale(double c) {
+		vector result = new vector(size);
 		for (int i = 0; i < size; i++) {
-			data[i] = data[i]*c;
+			result[i] = this.data[i]*c;
 		}
+		return result;
 	}
 	public static vector operator-(vector u, vector v) {
+		if (u.size != v.size) {
+			throw new InvalidOperationException("vectors must be the same size!");
+		}
 		vector result = new vector(u.size);
 		for (int i = 0; i < result.size; i++) {
 			result[i] = u[i] - v[i];
@@ -37,26 +52,67 @@ public class vector {
 		return result;
 	}
 
+	static bool approx(double a, double b, double acc=1e-9, double eps=1e-9) {
+		if(Math.Abs(a-b) < acc) {
+			return true;
+		}
+		if(Math.Abs(a-b)/(Math.Abs(a) + Math.Abs(b)) < eps) {
+			return true;
+		}
+		return false;
+	}
+	public bool approx(vector v) {
+		if(this.size != v.size) {
+			throw new InvalidOperationException("vectors must be the same size!");
+		}
+		for (int i = 0; i < this.size; i++) {
+			if(!approx(data[i], v[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public void print(string s) {
+		System.Console.Out.Write(s);
+		System.Console.Out.WriteLine("");
+		for (int i = 0; i < this.size; i++) {
+			System.Console.Out.WriteLine(data[i]);
+		}
+	}
+
 }
+
 
 public class matrix {
 	public readonly int size1, size2;
 	private double[] data;       // matrix elements
-	public matrix(int n, int m) {
+	public matrix(int n, int m) {     // constructor
 		size1 = n;
 		size2 = m;
 		data = new double[size1*size2];
 	}
+	public matrix(int n, int m, int a) {    // constructor for matrix with random entries between 0 and a
+		size1 = n;
+		size2 = m;
+		var rnd = new System.Random(a);
+		data = new double[size1*size2];
+		for(int i = 0; i < size1; i++) {
+                        for(int j = 0; j < size2; j++) {
+                                data[i + j*size1] = rnd.NextDouble();
+                        }
+		}
+	}
+	public matrix(int n) {        // constructor for identity matrix of dimension n
+		size1 = n;
+		size2 = n;
+		data = new double[n*n];
+		for (int i = 0; i < n; i++) {
+			data[i + i*size1] = 1;
+		}
+	}
 	public double this[int i, int j] {
 		get => data[i + j*size1];
 		set => data[i + j*size1] = value;
-		}
-	public double norm(int j) {     // norm of the j'th column
-		double len_squared = 0;
-		for (int i = 0; i < size1; i++) {
-			len_squared += data[i + j*size1]*data[i + j*size1];
-		}
-		return Math.Sqrt(len_squared);
 	}
 	public matrix Copy() {
 		matrix Q = new matrix(size1, size2);
@@ -75,6 +131,9 @@ public class matrix {
 		return column_j;
 	}
 	public void set_column(int j, vector v) {
+		if (size1 != v.size) {
+			throw new InvalidOperationException("column vector and input vector must be the same size!");
+		}
 		for (int i = 0; i < size1; i++) {
 			data[i + j*size1] = v[i];
 		}
@@ -87,11 +146,17 @@ public class matrix {
 		return row_i;
 	}
 	public void set_row(int i, vector v) {
+		if (size2 != v.size) {
+			throw new InvalidOperationException("vectors must be the same size!");
+		}
 		for (int j = 0; j < size2; j++) {
 			data[i + j*size1] = v[j];
 		}
 	}
 	public matrix matrix_product(matrix B) {
+		if (this.size2 != B.size1) {
+			throw new InvalidOperationException("The number of columns in this matrix must match the number of rows in matrix B!");
+		}
 		matrix result = new matrix(size1, B.size2);
 		for (int i = 0; i < size1; i++) {
 			for (int j = 0; j < B.size2; j++) {
@@ -100,244 +165,154 @@ public class matrix {
 		}
 		return result;
 	}
+	public void print(string s) {
+		System.Console.Out.Write(s);
+		for (int i = 0; i < this.size1; i++) {
+			System.Console.Out.WriteLine("");
+			for (int j = 0; j < this.size2; j++) {
+				System.Console.Out.Write($"{data[i + j*size1]}   ");
+			}
+		}
+	System.Console.Out.WriteLine("");
+	}
+	static bool approx(double a, double b, double acc=1e-9, double eps=1e-9) {
+		if(Math.Abs(a-b) < acc) {
+                        return true;
+                }
+                if(Math.Abs(a-b)/(Math.Abs(a) + Math.Abs(b)) < eps) {
+                        return true;
+                }
+                return false;
+        }
+	public bool approx(matrix m) {
+		if(this.size1 != m.size1 || this.size2 != m.size2) {
+			throw new InvalidOperationException("The matrices must be the same size!");
+		}
+		for (int i = 0; i < this.size1; i++) {
+                        for (int j = 0; j < this.size2; j++) {
+				if(!approx(data[i + j*size1], m[i, j])) {
+					return false;
+				}
+                        }
+		}
+		return true;
+	}
+	public matrix transpose() {
+		matrix result = new matrix(size2, size1);
+		for (int j = 0; j < this.size2; j++) {
+			result.set_row(j, get_column(j));
+		}
+		return result;
+	}
+	public vector vector_multiplication(vector v) {
+		if (this.size2 != v.size) {
+			throw new InvalidOperationException("vector doesn't have the right size!");
+		}
+		matrix m = new matrix(v.size, 1);
+		m.set_column(0, v);
+		vector result = matrix_product(m).get_column(0);
+		return result;
+	}
 }
 
 
-public static class QRGS {
+public static class QRGS {          // QR-decomposition by modified Gram-Schmidt orthogonalization
 	public static (matrix, matrix) decomp(matrix A) {
+		if (A.size1 < A.size2) {
+			throw new InvalidOperationException("A must be either square or a tall matrix!");
+		}
 		matrix Q = A.Copy();
 		matrix R = new matrix(A.size2, A.size2);
 		for (int i = 0; i < A.size2; i++) {
 			vector Q_column_i = Q.get_column(i);
 			R[i, i] = Q_column_i.norm();
-			Q_column_i.scale(1/R[i, i]);
+			Q_column_i = Q_column_i.scale(1/R[i, i]);
+			Q.set_column(i, Q_column_i);
 
 			for (int j = i+1; j < A.size2; j++) {
 				vector Q_column_j = Q.get_column(j);
 				R[i, j] = Q_column_i.dot(Q_column_j);
-				//Q_column_j = Q_column_j - Q_column_i.scale(R[i, j]);
+				Q_column_j = Q_column_j - Q_column_i.scale(R[i, j]);
+				Q.set_column(j, Q_column_j);
 			}
 		}
 		return (Q, R);
 	}
-}
-
-
-
-/*
-public static class QRGS {
-        public static (matrix, matrix) decomp(matrix A) {      // method to factorize a matrix 'A' into a product of an>                matrix Q = A.Copy();
-		matrix Q = A.Copy();
-                matrix R = new matrix(A.size2, A.size2);
-		for (int i = 0; i < A.size2; i++) {
-			R[i, i] = Q.norm(i);
-			for (int k = 0; k < Q.size1; k++) {
-				Q[i, k] = Q[i, k]/R[i, i];
-			}
-			for (int s = i + 1; s < A.size2; s++) {
-				double Q_i_dot_Q_s = 0;
-				for (int l = 0; l < Q.size1; l++)  {
-					Q_i_dot_Q_s += Q[i, l]*Q[s, l];
-				}
-			R[i, s] = Q_i_dot_Q_s;
+	public static void backsub(matrix R, vector c) {
+		if (R.size1 != c.size) {
+			throw new InvalidOperationException("vector doesn't have the right size!");
+		}
+		for (int i = c.size - 1; i >= 0; i--) {
+			double sum = 0;
+			for (int k = i + 1; k < c.size; k++) {
+				sum += R[i, k]*c[k];
+				c[i] = (c[i] - sum)/R[i, i];
 			}
 		}
-		return (Q, R);
-        }
+	}
+	public static vector solve(matrix A, vector b) {
+		if (A.size1 != b.size) {
+			throw new InvalidOperationException("vector doesn't have the right size!");
+		}
+		(matrix Q, matrix R) = decomp(A);
+		vector c = Q.transpose().vector_multiplication(b);
+		backsub(R, c);
+		return c;
+	}
+	public static double det(matrix A) {
+		if (A.size1 != A.size2) {
+			throw new InvalidOperationException("matrix must be square!");
+		}
+		(matrix R, matrix Q) = decomp(A);
+		double result = R[0, 0];
+		for (int i = 1; i < R.size1; i++) {
+			result *= R[i, i];
+		}
+		return result;
+	}
 }
-*/
+
+
 
 public static class main {
 
 public static int Main() {
 
-var rnd = new System.Random(1);    // for generating random numbers
-//System.Console.Out.WriteLine(rnd.NextDouble());
-
-
-System.Console.Out.WriteLine("lets look at vectors...");
-
-vector vec1 = new vector(2);
-vector vec2 = new vector(2);
-
-
-//System.Console.Out.WriteLine($"size of vector is: {vec.size}");
-
-for (int i = 0; i < vec1.size; i++) {
-	System.Console.Out.WriteLine($"{i}'th entrance of vec1 is: {vec1[i]}");
-	vec1[i] = rnd.NextDouble();
-	System.Console.Out.WriteLine($"now {i}'th entrance of vec1 is: {vec1[i]}");
-	//System.Console.Out.WriteLine($"this means the norm of the vector is: {vec1.norm()}");
-}
-
-for (int i = 0; i < vec2.size; i++) {
-        System.Console.Out.WriteLine($"{i}'th entrance of vec2 is: {vec2[i]}");
-        vec2[i] = rnd.NextDouble();
-        System.Console.Out.WriteLine($"now {i}'th entrance of vec2 is: {vec2[i]}");
-        //System.Console.Out.WriteLine($"this means the norm of the vector is: {vec2.norm()}");
-}
-
-
-vector vec3 = vec1 - vec2;
-
-System.Console.Out.WriteLine($"vec1 minus vec2 we call vec3");
-
-for (int i = 0; i < vec3.size; i++) {
-        System.Console.Out.WriteLine($"{i}'th entrance of vec3 is: {vec3[i]}");
-}
-
-
-System.Console.Out.WriteLine("");
-
-System.Console.Out.WriteLine("time to look at matrices...");
-
-matrix matrix1 = new matrix(2, 2);
-
-for (int i = 0; i < matrix1.size1; i++) {
-	for (int j = 0; j < matrix1.size2; j++) {
-		//System.Console.Out.WriteLine($"({i},{j})'th entrance of matrix is: {matrix1[i, j]}");
-		matrix1[i, j] = rnd.NextDouble();
-		//System.Console.Out.WriteLine($"now ({i},{j})'th entrance of matrix is: {matrix1[i, j]}");
-		//System.Console.Out.WriteLine($"this means the norm of the {j}'th column of the matrix is: {matrix1.norm(j)}");
-	}
-}
-
-
-matrix B = matrix1.Copy();
-
-
-for (int i = 0; i < B.size1; i++) {
-        for (int j = 0; j < B.size2; j++) {
-                System.Console.Out.WriteLine($"({i},{j})'th entrance of B is: {B[i, j]}");
-		//matrix1[i, j] = 1;
-                //System.Console.Out.WriteLine($"now ({i},{j})'th entrance of matrix is: {matrix1[i, j]}");
-                //System.Console.Out.WriteLine($"this means the norm of the {j}'th column of the matrix is: {matrix1.norm>
-	}
-}
-
-B.set_column(0, vec3);
-
-for (int i = 0; i < B.size1; i++) {
-        for (int j = 0; j < B.size2; j++) {
-                System.Console.Out.WriteLine($"after setting the 1'th column of B equal to vec3 the ({i},{j})'th entrance of B is: {B[i, j]}");
-	}
-}
-
-
-System.Console.Out.WriteLine("");
-System.Console.Out.WriteLine("lets look at columns of a matrix...");
-
-vector column1 = B.get_column(0);
-vector column2 = B.get_column(1);
-
-for (int i = 0; i < column1.size; i++) {
-	System.Console.Out.WriteLine($"{i}'th entrance of column 1 of B is: {column1[i]}");
-}
-
-for (int i = 0; i < column2.size; i++) {
-        System.Console.Out.WriteLine($"{i}'th entrance of column 2 of B is: {column2[i]}");
-}
-
-
-System.Console.Out.WriteLine($"dot product between column 1 and column 2 is {column1.dot(column2)}");
-
-
-column1.scale(10);
-
-for (int i = 0; i < column1.size; i++) {
-        System.Console.Out.WriteLine($"after scaling the 1'th column of B with 10 the {i}'th entrance of column 1 is: {column1[i]}");
-}
-
-
-System.Console.Out.WriteLine("");
-System.Console.Out.WriteLine("lets look at the rows of a matrix...");
-
-vector row1 = B.get_row(0);
-vector row2 = B.get_row(1);
-
-for (int i = 0; i < row1.size; i++) {
-        System.Console.Out.WriteLine($"{i}'th entrance of row 1 of B is: {row1[i]}");
-}
-
-for (int i = 0; i < row2.size; i++) {
-        System.Console.Out.WriteLine($"{i}'th entrance of row 2 of B is: {row2[i]}");
-}
-
-B.set_row(0, vec3);
-
-for (int i = 0; i < B.size1; i++) {
-        for (int j = 0; j < B.size2; j++) {
-                System.Console.Out.WriteLine($"after setting the 1'th row of B equal to vec3 the ({i},{j})'th entrance of B is: {B[i, j]}");
-	}
-}
-
-System.Console.Out.WriteLine("");
-
-System.Console.Out.WriteLine("lets look at matrix product");
-
-matrix C = new matrix(2, 2);
-
-for (int i = 0; i < C.size1; i++) {
-        for (int j = 0; j < C.size2; j++) {
-		C[i, j] = rnd.NextDouble();
-		System.Console.Out.WriteLine($"the ({i}, {j})'th entrance of C is: {C[i, j]}");
-	}
-}
-
-matrix G = C.matrix_product(B);
-
-System.Console.Out.WriteLine("we call the product of matrix C with matrix B 'G'");
-
-for (int i = 0; i < G.size1; i++) {
-        for (int j = 0; j < G.size2; j++) {
-                System.Console.Out.WriteLine($"the ({i}, {j})'th entrance of G is: {G[i, j]}");
-        }
-}
-
-
-System.Console.Out.WriteLine("");
-
-System.Console.Out.WriteLine("doing decomposition of matrix B...");
-
-(matrix Q, matrix R) = QRGS.decomp(B);
-
-
-for (int i = 0; i < Q.size1; i++) {
-        for (int j = 0; j < Q.size2; j++) {
-                System.Console.Out.WriteLine($"({i},{j})'th entrance of Q is: {Q[i, j]}");
-               }
-}
-
-for (int i = 0; i < R.size1; i++) {
-        for (int j = 0; j < R.size2; j++) {
-                System.Console.Out.WriteLine($"({i},{j})'th entrance of R is: {R[i, j]}");
-               }
-}
-
-
-
-
 /*
-		for (int i = 0; i < m; i++){
-		R[i, i] = Q[i] . norm ( ) ; /∗ Q[ i ] points to the i−th columb ∗/
-		Q[ i ]/=R[ i , i ] ;
-		for ( int j=i +1;j<m; j++){
-		R[ i , j ]=Q[ i ] . dot (Q[ j ] ) ;
-		Q[ j]−=Q[ i ]∗R[ i , j ] ; } }
-
-
-		return (Q, R);
-	}
-	public static vector solve(matrix Q, matrix R, vector b) {
-		return b;
-	}
-	public static double det(matrix R) {
-		return 0;
-	}
-}
-
+matrix A = new matrix(15, 7, 1);
+A.print("matrix A");
+(matrix Q, matrix R) = QRGS.decomp(A);
+Q.print("matrix Q");
+Q.transpose().print("transpose of Q");
+matrix Q_transpose_times_Q = Q.transpose().matrix_product(Q);
+Q_transpose_times_Q.print("Q transpose times Q");
+matrix I = new matrix(7);
+I.print("identity matrix of dimension 7");
+System.Console.Out.WriteLine($"is the product of Q transpose with Q equal (within precision) to I? Answer: {Q_transpose_times_Q.approx(I)}");
+R.print("matrix R");
+matrix M = Q.matrix_product(R);
+System.Console.Out.WriteLine($"is the product of Q with R equal (within precision) to A? Answer: {M.approx(A)}");
 */
 
+/*
+matrix G = new matrix(4, 3, 1);
+G.print("matrix G");
+vector w = new vector(3, 1);
+w.print("vector w");
+vector u = G.vector_multiplication(w);
+u.print("G times v gives:");
+*/
+
+matrix H = new matrix(2, 2, 1);
+H.print("matrix H");
+vector b = new vector(2, 1);
+b.print("vector b");
+vector x = QRGS.solve(H, b);
+x.print("vector x");
+
+System.Console.Out.WriteLine($"is H times x equal to b? Answer: {H.vector_multiplication(x).approx(b)}");
+
+System.Console.Out.WriteLine($"determinant of H is: {QRGS.det(H)}");
 
 return 0;
 }//Main
